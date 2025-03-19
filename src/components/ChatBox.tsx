@@ -3,11 +3,19 @@ import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ReactMarkdown from 'react-markdown';
+import type { ReactNode } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
   isTyping?: boolean;
+}
+
+interface CodeProps {
+  node?: any;
+  inline?: boolean;
+  className?: string;
+  children?: ReactNode;
 }
 
 export default function ChatBox() {
@@ -91,9 +99,8 @@ export default function ChatBox() {
     return (
       <div className="relative group">
         <ReactMarkdown
-          // @ts-ignore
           components={{
-            code: ({ inline, className, children }) => {
+            code: function Code({ inline, className, children }: CodeProps) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
                 <div className="relative">
