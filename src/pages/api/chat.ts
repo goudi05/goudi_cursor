@@ -1,6 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
+if (!process.env.DEEPSEEK_API_KEY) {
+  throw new Error('Missing DEEPSEEK_API_KEY environment variable');
+}
+
+if (!process.env.DEEPSEEK_API_BASE_URL) {
+  throw new Error('Missing DEEPSEEK_API_BASE_URL environment variable');
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -12,8 +20,12 @@ export default async function handler(
   try {
     const { messages } = req.body;
 
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ message: 'Invalid request body' });
+    }
+
     const openai = new OpenAI({
-      baseURL: 'https://api.deepseek.com',
+      baseURL: process.env.DEEPSEEK_API_BASE_URL,
       apiKey: process.env.DEEPSEEK_API_KEY
     });
 
