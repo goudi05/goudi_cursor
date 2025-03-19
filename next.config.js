@@ -2,6 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+    legacyBrowsers: false,
+  },
+  compress: true,
   output: 'standalone',
   images: {
     unoptimized: true
@@ -20,6 +25,10 @@ const nextConfig = {
     ]
   },
   poweredByHeader: false,
+  generateEtags: true,
+  httpAgentOptions: {
+    keepAlive: true,
+  },
 }
 
 module.exports = nextConfig 
