@@ -9,6 +9,13 @@ if (!process.env.DEEPSEEK_API_BASE_URL) {
   throw new Error('Missing DEEPSEEK_API_BASE_URL environment variable');
 }
 
+export const config = {
+  api: {
+    bodyParser: true,
+    responseLimit: false,
+  },
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,7 +33,8 @@ export default async function handler(
 
     const openai = new OpenAI({
       baseURL: process.env.DEEPSEEK_API_BASE_URL,
-      apiKey: process.env.DEEPSEEK_API_KEY
+      apiKey: process.env.DEEPSEEK_API_KEY,
+      timeout: 30000, // 30 seconds timeout
     });
 
     const completion = await openai.chat.completions.create({
